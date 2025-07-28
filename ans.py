@@ -12,12 +12,10 @@ from telethon.errors import (
     ChatWriteForbiddenError,
     ChannelInvalidError,
     PeerIdInvalidError,
-    SessionPasswordNeededError,
-    ConnectionError
+    SessionPasswordNeededError
 )
 from colorama import init, Fore
 import pyfiglet
-import socket
 import aiohttp
 
 # Initialize colorama
@@ -257,7 +255,7 @@ async def run_session(session_name, credentials):
                     print(Fore.YELLOW + f"[{session_name}] Cycle complete, waiting {CYCLE_DELAY//60}min")
                     await asyncio.sleep(CYCLE_DELAY)
                     
-                except (ConnectionError, aiohttp.ClientError) as e:
+                except (aiohttp.ClientError, asyncio.TimeoutError) as e:
                     print(Fore.RED + f"[{session_name}] Network error: {str(e)}")
                     await wait_for_internet()
                     continue
